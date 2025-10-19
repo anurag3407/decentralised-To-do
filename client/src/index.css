@@ -1,34 +1,696 @@
-import {useState} from "react";
-import {createBrowserRouter,RouterProvider} from 'react-router-dom';
-import CreateTask from './pages/CreateTask'
-import Wallet from './pages/Wallet'
-import ViewAllTasks from './pages/ViewAllTasks'
-import UpdateTask from './pages/UpdateTask'
-import ViewTask from './pages/ViewTask'
-import DeleteTask from './pages/DeleteTask';
-
-import './App.css'
-
-function App() {
-  const [state,setState]=useState({web3:null,contract:null,account:null})
-  
-  const saveState=({web3,contract,account})=>{
-    setState({web3:web3,contract:contract,account:account})
-  }
-  const router = createBrowserRouter([
-    {path:'/',element:<Wallet saveState={saveState}/>},
-    {path:'/view-all-tasks',element:<ViewAllTasks/>},
-    {path:'/create-task',element:<CreateTask state={state}/>},
-    {path:'/view-task',element:<ViewTask/>},
-    {path:'/update-task',element:<UpdateTask state={state}/>},
-    {path:'/delete-task',element:<DeleteTask state={state}/>}
-  ])
-
-  return (
-    <>
-     <RouterProvider router={router}/>
-    </>
-  )
+/* ========= GLOBAL STYLES ========= */
+* {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  list-style-type: none;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
-export default App
+:root {
+  --primary-color: #6366f1;
+  --secondary-color: #8b5cf6;
+  --accent-color: #ec4899;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+  --bg-dark: #0a0a0f;
+  --bg-darker: #050508;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+body {
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a0b2e 50%, #0a0a0f 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  width: 100%;
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* Animated background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+  animation: bgShift 20s ease infinite;
+}
+
+@keyframes bgShift {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+/* Glassmorphism utility class */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 var(--shadow-color);
+}
+
+/* Button styles */
+button, .todo_btn button {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Input styles */
+input[type="text"],
+input[type="date"],
+input {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 15px;
+  width: 100%;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* ========= WALLET PAGE ========= */
+.wallet_header {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  text-align: center;
+}
+
+.wallet_header span {
+  color: var(--text-secondary);
+  font-weight: 300;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.wallet_header p {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  font-size: 42px;
+  margin-top: 8px;
+  letter-spacing: 3px;
+}
+
+.connect_wallet_section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 32px;
+  padding: 20px;
+}
+
+.connect_wallet_section p {
+  font-size: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* ========= NAVIGATION ========= */
+header {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 20px 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+header .logo {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+
+nav ul {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+nav li {
+  display: inline-block;
+}
+
+.nav_link {
+  color: var(--text-secondary);
+  padding: 10px 18px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+}
+
+.nav_link:hover {
+  color: var(--text-primary);
+  background: var(--glass-bg);
+}
+
+.nav_link::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  transition: transform 0.3s ease;
+}
+
+.nav_link:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ========= VIEW ALL TASKS ========= */
+.view_all_tasks {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 140px 20px 100px;
+  gap: 20px;
+}
+
+.view_all_tasks h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.view_all_tasks_card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 700px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  gap: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.view_all_tasks_card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.3);
+}
+
+.view_all_tasks_card p {
+  font-size: 16px;
+  flex: 1;
+}
+
+.view_all_tasks_card p:first-child {
+  flex: 0 0 60px;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 18px;
+}
+
+.view_all_tasks_card p:nth-child(2) {
+  flex: 2;
+  font-weight: 600;
+}
+
+.view_all_tasks_card p:last-child {
+  flex: 1;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.no_tasks_message {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 18px;
+  padding: 40px;
+}
+
+/* ========= FORM PAGES (Create, Update, Delete, View) ========= */
+.create_task,
+.update_task,
+.delete_task,
+.view_task {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 140px 20px 60px;
+}
+
+.create_task form,
+.update_task form,
+.delete_task form,
+.view_task form {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  padding: 40px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.create_task form h2,
+.update_task form h2,
+.delete_task form h2 {
+  text-align: center;
+  font-size: 28px;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.form_group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form_group label {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* View Task Specific */
+.view_task_by_id {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  padding: 32px;
+  border-radius: 20px;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  min-width: 400px;
+}
+
+.view_task_by_id p {
+  font-size: 18px;
+  margin: 12px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view_task_by_id p strong {
+  color: var(--primary-color);
+  min-width: 120px;
+}
+
+.empty_div {
+  height: 200px;
+}
+
+/* ========= MODAL ========= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--glass-border);
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content p {
+  color: var(--text-primary);
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.close:hover {
+  color: var(--error-color);
+  transform: rotate(90deg);
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 18px;
+  padding: 40px;
+}
+
+.spinner {
+  border: 3px solid var(--glass-border);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ========= RESPONSIVE DESIGN ========= */
+@media (max-width: 1024px) {
+  header {
+    padding: 20px 30px;
+  }
+  
+  .view_all_tasks_card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+
+  header .logo {
+    font-size: 20px;
+  }
+
+  nav ul {
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .nav_link {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .wallet_header p {
+    font-size: 32px;
+  }
+
+  .wallet_header span {
+    font-size: 16px;
+  }
+
+  .connect_wallet_section p {
+    font-size: 20px;
+  }
+
+  .view_all_tasks {
+    padding: 180px 16px 60px;
+  }
+
+  .view_all_tasks h1 {
+    font-size: 28px;
+  }
+
+  .view_all_tasks_card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 12px;
+  }
+
+  .view_all_tasks_card p:first-child,
+  .view_all_tasks_card p:nth-child(2),
+  .view_all_tasks_card p:last-child {
+    flex: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .view_all_tasks_card p:last-child {
+    border-top: 1px solid var(--glass-border);
+    padding-top: 12px;
+    margin-top: 8px;
+  }
+
+  .create_task form,
+  .update_task form,
+  .delete_task form,
+  .view_task form {
+    padding: 30px 24px;
+  }
+
+  .view_task_by_id {
+    min-width: unset;
+    width: 100%;
+    padding: 24px;
+  }
+
+  .view_task_by_id p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 12px 16px;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .nav_link {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .wallet_header {
+    padding: 16px;
+  }
+
+  .wallet_header p {
+    font-size: 28px;
+  }
+
+  .wallet_header span {
+    font-size: 14px;
+  }
+
+  .connect_wallet_section p {
+    font-size: 18px;
+  }
+
+  button {
+    padding: 10px 24px;
+    font-size: 14px;
+  }
+
+  .view_all_tasks {
+    padding: 200px 12px 60px;
+  }
+
+  .view_all_tasks h1 {
+    font-size: 24px;
+  }
+
+  .view_all_tasks_card {
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  .create_task form,
+  .update_task form,
+  .delete_task form,
+  .view_task form {
+    padding: 24px 20px;
+  }
+
+  .create_task form h2,
+  .update_task form h2,
+  .delete_task form h2 {
+    font-size: 24px;
+  }
+
+  input {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .modal-content {
+    padding: 30px 20px;
+  }
+
+  .modal-content p {
+    font-size: 16px;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-darker);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+}

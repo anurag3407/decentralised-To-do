@@ -1,11 +1,11 @@
 import {useState} from "react";
 import {createBrowserRouter,RouterProvider} from 'react-router-dom';
-import CreateTask from './pages/CreateTask'
-import Wallet from './pages/Wallet'
-import ViewAllTasks from './pages/ViewAllTasks'
-import UpdateTask from './pages/UpdateTask'
-import ViewTask from './pages/ViewTask'
-import DeleteTask from './pages/DeleteTask';
+import CreateTask from './Pages/CreateTask'
+import Wallet from './Pages/Wallet'
+import ViewAllTasks from './Pages/ViewAllTask'
+import UpdateTask from './Pages/UpdateTask'
+import ViewTask from './Pages/ViewTask'
+import DeleteTask from './Pages/DeleteTask';
 
 import './App.css'
 
@@ -22,7 +22,12 @@ function App() {
     {path:'/view-task',element:<ViewTask/>},
     {path:'/update-task',element:<UpdateTask state={state}/>},
     {path:'/delete-task',element:<DeleteTask state={state}/>}
-  ])
+  ], {
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    }
+  })
 
   return (
     <>
