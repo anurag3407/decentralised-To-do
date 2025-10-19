@@ -75,7 +75,7 @@ const UpdateTask =({state})=>{
     }
     return(
     <>
-      <Navigation />
+      <Navigation account={state?.account} />
       <div className="update_task todo_btn">
         <form onSubmit={updateTask}>
           <h2>Update Task</h2>

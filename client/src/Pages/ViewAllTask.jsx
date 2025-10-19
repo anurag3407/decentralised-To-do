@@ -1,7 +1,8 @@
 import {useState,useEffect} from "react";
+import PropTypes from 'prop-types';
 import Navigation from "../components/Navigation";
 
-const ViewAllTasks =()=>{
+const ViewAllTasks =({state})=>{
     const [taskList,setTaskList]=useState([])
     const [loading,setLoading]=useState(true)
 
@@ -28,7 +29,7 @@ const ViewAllTasks =()=>{
     },[])
     
     return<>
-      <Navigation/>
+      <Navigation account={state?.account}/>
       <div className="view_all_tasks">
         <h1>All Tasks</h1>
         {loading ? (
@@ -58,4 +59,9 @@ const ViewAllTasks =()=>{
       </div>
     </>
 }
+
+ViewAllTasks.propTypes = {
+    state: PropTypes.object,
+};
+
 export default ViewAllTasks;

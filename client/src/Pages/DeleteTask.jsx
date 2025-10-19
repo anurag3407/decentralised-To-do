@@ -88,7 +88,7 @@ const DeleteTask =({state})=>{
     
     return(
     <>
-      <Navigation />
+      <Navigation account={state?.account} />
       <div className="delete_task todo_btn">
         <form onSubmit={deleteTask}>
           <h2>Delete Task</h2>

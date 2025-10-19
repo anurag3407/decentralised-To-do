@@ -1,5 +1,16 @@
 import {Link} from "react-router-dom";
-const Navigation =()=>{
+import {useState} from "react";
+import PropTypes from 'prop-types';
+
+const Navigation =({account})=>{
+    const [copied, setCopied] = useState(false);
+    
+    const copyAddress = () => {
+        navigator.clipboard.writeText(account);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+    
     return(
         <header>
         <div className="logo">TODO 3.O</div>
@@ -35,9 +46,31 @@ const Navigation =()=>{
                 Delete Task
               </Link>
             </li>
+            {account && (
+              <li className="wallet_info_nav">
+                <div className="wallet_info">
+                  <span className="wallet_icon">🔗</span>
+                  <span className="wallet_address_header">
+                    {account.slice(0, 6)}...{account.slice(-4)}
+                  </span>
+                  <button 
+                    className="copy_btn" 
+                    onClick={copyAddress}
+                    title="Copy address"
+                  >
+                    {copied ? '✓' : '📋'}
+                  </button>
+                </div>
+              </li>
+            )}
           </ul>
         </nav>
       </header>
     )
 }
+
+Navigation.propTypes = {
+    account: PropTypes.string,
+};
+
 export default Navigation;

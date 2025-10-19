@@ -76,7 +76,7 @@ const CreateTask =({state})=>{
     }
     return(
         <>
-          <Navigation />
+          <Navigation account={state?.account} />
           <div className="create_task todo_btn">
             <form onSubmit={createTask}>
               <h2>Create New Task</h2>

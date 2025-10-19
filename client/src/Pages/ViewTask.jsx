@@ -1,7 +1,8 @@
 import {useState, useRef} from "react";
+import PropTypes from 'prop-types';
 import Navigation from "../components/Navigation";
 
-const ViewTask =()=>{
+const ViewTask =({state})=>{
     const [task,setTask]=useState({numId:null,name:null,date:null});
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState("");
@@ -51,7 +52,7 @@ const ViewTask =()=>{
     };
     
     return<>
-     <Navigation/>
+     <Navigation account={state?.account}/>
      <div className="view_task todo_btn">
      {task.numId!==null && task.name!==null && task.date!==null ? (
           <div className="view_task_by_id">
@@ -93,4 +94,9 @@ const ViewTask =()=>{
 
     </>
 }
+
+ViewTask.propTypes = {
+    state: PropTypes.object,
+};
+
 export default ViewTask;

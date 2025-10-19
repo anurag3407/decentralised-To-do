@@ -11,24 +11,24 @@
 }
 
 :root {
-  --primary-color: #6366f1;
-  --primary-light: #818cf8;
-  --primary-dark: #4f46e5;
-  --secondary-color: #8b5cf6;
-  --secondary-light: #a78bfa;
-  --accent-color: #ec4899;
-  --accent-light: #f472b6;
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
-  --error-color: #ef4444;
-  --bg-dark: #0a0a0f;
-  --bg-darker: #050508;
+  --primary-color: #667eea;
+  --primary-light: #7c91ff;
+  --primary-dark: #5568d3;
+  --secondary-color: #764ba2;
+  --secondary-light: #9d7cbf;
+  --accent-color: #f093fb;
+  --accent-light: #f5b9ff;
+  --success-color: #06d6a0;
+  --warning-color: #ffd93d;
+  --error-color: #ff6b6b;
+  --bg-dark: #0f0f23;
+  --bg-darker: #0a0a14;
   --glass-bg: rgba(255, 255, 255, 0.08);
-  --glass-bg-hover: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-bg-hover: rgba(255, 255, 255, 0.14);
+  --glass-border: rgba(255, 255, 255, 0.18);
   --text-primary: #ffffff;
-  --text-secondary: #d4d4d8;
-  --text-muted: #a1a1aa;
+  --text-secondary: #e5e5f0;
+  --text-muted: #9ca3af;
   --shadow-color: rgba(0, 0, 0, 0.3);
   --shadow-color-light: rgba(0, 0, 0, 0.1);
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -41,7 +41,7 @@ html {
 }
 
 body {
-  background: linear-gradient(135deg, #0a0a0f 0%, #1a0b2e 50%, #0a0a0f 100%);
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 25%, #2d1b4e 50%, #1a1a3e 75%, #0f0f23 100%);
   background-attachment: fixed;
   min-height: 100vh;
   width: 100%;
@@ -163,21 +163,23 @@ body::after {
 
 /* Button styles */
 button, .todo_btn button {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   color: white;
-  border: none;
-  padding: 14px 36px;
-  border-radius: 14px;
-  font-size: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  padding: 16px 40px;
+  border-radius: 16px;
+  font-size: 17px;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-base);
   box-shadow: 
-    0 4px 15px rgba(99, 102, 241, 0.4),
-    0 0 0 0 rgba(99, 102, 241, 0.4);
+    0 6px 20px rgba(102, 126, 234, 0.35),
+    0 0 30px rgba(240, 147, 251, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 button::before {
@@ -187,7 +189,7 @@ button::before {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transition: left var(--transition-slow);
 }
 
@@ -196,17 +198,21 @@ button:hover::before {
 }
 
 button:hover {
-  transform: translateY(-3px) scale(1.02);
+  transform: translateY(-4px) scale(1.03);
   box-shadow: 
-    0 8px 25px rgba(99, 102, 241, 0.6),
-    0 0 0 4px rgba(99, 102, 241, 0.1);
+    0 12px 35px rgba(102, 126, 234, 0.5),
+    0 0 50px rgba(240, 147, 251, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 0 4px rgba(102, 126, 234, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 button:active {
-  transform: translateY(-1px) scale(0.98);
+  transform: translateY(-2px) scale(0.98);
   box-shadow: 
-    0 4px 15px rgba(99, 102, 241, 0.4),
-    0 0 0 2px rgba(99, 102, 241, 0.2);
+    0 6px 20px rgba(102, 126, 234, 0.35),
+    0 0 30px rgba(240, 147, 251, 0.2),
+    0 0 0 2px rgba(102, 126, 234, 0.2);
 }
 
 button:disabled {
@@ -224,32 +230,39 @@ button:disabled:hover {
 input[type="text"],
 input[type="date"],
 input {
-  background: rgba(255, 255, 255, 0.08);
-  border: 2px solid var(--glass-border);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.09));
+  border: 2px solid rgba(102, 126, 234, 0.25);
   color: var(--text-primary);
-  padding: 16px 20px;
-  border-radius: 14px;
-  font-size: 16px;
+  padding: 17px 22px;
+  border-radius: 16px;
+  font-size: 17px;
   width: 100%;
   transition: all var(--transition-base);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   font-weight: 500;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(102, 126, 234, 0.1);
 }
 
 input:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.12));
+  border-color: rgba(102, 126, 234, 0.4);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 input:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.14);
-  border-color: var(--primary-light);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.15));
+  border-color: var(--accent-color);
   box-shadow: 
-    0 0 0 4px rgba(99, 102, 241, 0.2),
-    0 4px 12px rgba(99, 102, 241, 0.3);
-  transform: translateY(-1px);
+    0 0 0 4px rgba(240, 147, 251, 0.25),
+    0 6px 20px rgba(102, 126, 234, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 input::placeholder {
@@ -295,9 +308,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .wallet_header span {
   color: var(--text-muted);
-  font-weight: 400;
-  font-size: 14px;
-  letter-spacing: 3px;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 3.5px;
   text-transform: uppercase;
   display: block;
   animation: fadeInUp 0.6s ease 0.2s both;
@@ -309,9 +322,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 800;
-  font-size: 48px;
-  margin-top: 8px;
-  letter-spacing: 2px;
+  font-size: 56px;
+  margin-top: 10px;
+  letter-spacing: 2.5px;
   animation: fadeInUp 0.6s ease 0.4s both;
   position: relative;
   display: inline-block;
@@ -344,24 +357,91 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .connect_wallet_section::before {
   content: '🔐';
-  font-size: 80px;
+  font-size: 96px;
   animation: scaleIn 0.8s ease 0.2s both;
   filter: drop-shadow(0 10px 20px rgba(99, 102, 241, 0.3));
 }
 
 .connect_wallet_section p {
-  font-size: 20px;
+  font-size: 22px;
   text-align: center;
   color: var(--text-secondary);
-  max-width: 550px;
-  line-height: 1.8;
+  max-width: 600px;
+  line-height: 1.9;
   animation: fadeInUp 0.8s ease 0.4s both;
+  font-weight: 500;
 }
 
 .connect_wallet_section button {
   animation: fadeInUp 0.8s ease 0.6s both;
+  font-size: 19px;
+  padding: 18px 52px;
+}
+
+.connect_wallet_section button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(168, 85, 247, 0.5));
+}
+
+/* Connected Wallet Display */
+.wallet_connected {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(20, 20, 30, 0.85);
+  backdrop-filter: blur(20px);
+  padding: 32px 40px;
+  border-radius: 20px;
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: scaleIn 0.6s ease;
+  min-width: 400px;
+}
+
+.wallet_connected .connected_status {
+  font-size: 22px;
+  font-weight: 600;
+  color: #10b981;
+  text-align: center;
+  margin: 0;
+  animation: fadeInUp 0.6s ease 0.2s both;
+}
+
+.wallet_connected .wallet_address {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+  animation: fadeInUp 0.6s ease 0.3s both;
+}
+
+.wallet_connected .wallet_address span {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.wallet_connected .wallet_address {
   font-size: 18px;
-  padding: 16px 48px;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  background: rgba(99, 102, 241, 0.1);
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  margin: 0;
+}
+
+.wallet_connected .redirect_message {
+  font-size: 16px;
+  color: var(--accent-color);
+  text-align: center;
+  margin: 8px 0 0 0;
+  animation: fadeInUp 0.6s ease 0.4s both, shimmer 2s ease-in-out infinite;
 }
 
 /* ========= NAVIGATION ========= */
@@ -389,8 +469,8 @@ header .logo {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 800;
-  font-size: 26px;
-  letter-spacing: 0.5px;
+  font-size: 30px;
+  letter-spacing: 0.8px;
   position: relative;
   transition: all var(--transition-base);
 }
@@ -398,6 +478,95 @@ header .logo {
 header .logo:hover {
   transform: scale(1.05);
   filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.4));
+}
+
+.wallet_info_nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.wallet_info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  padding: 11px 20px;
+  border-radius: 16px;
+  transition: all var(--transition-base);
+  box-shadow: 
+    0 4px 20px rgba(102, 126, 234, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.wallet_info::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.6), rgba(240, 147, 251, 0.6));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.wallet_info:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.25), rgba(118, 75, 162, 0.25));
+  box-shadow: 
+    0 8px 30px rgba(102, 126, 234, 0.3),
+    0 0 40px rgba(240, 147, 251, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-3px);
+}
+
+.wallet_icon {
+  font-size: 20px;
+  animation: shimmer 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.6));
+}
+
+.wallet_address_header {
+  font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Courier New', monospace;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.9px;
+  user-select: all;
+  text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+}
+
+.copy_btn {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(240, 147, 251, 0.3));
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  padding: 7px 11px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  min-width: 38px;
+  height: 34px;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+}
+
+.copy_btn:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(240, 147, 251, 0.5));
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.08);
+  box-shadow: 0 4px 20px rgba(240, 147, 251, 0.4);
+}
+
+.copy_btn:active {
+  transform: scale(0.92);
 }
 
 nav ul {
@@ -413,10 +582,10 @@ nav li {
 
 .nav_link {
   color: var(--text-secondary);
-  padding: 11px 20px;
-  border-radius: 10px;
+  padding: 12px 22px;
+  border-radius: 12px;
   transition: all var(--transition-base);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   position: relative;
   display: block;
@@ -477,31 +646,34 @@ nav li {
 }
 
 .view_all_tasks h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
+  font-size: 42px;
+  margin-bottom: 24px;
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .view_all_tasks_card {
-  background: rgba(20, 20, 30, 0.75);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border: 2px solid var(--glass-border);
+  background: linear-gradient(135deg, rgba(15, 15, 35, 0.85), rgba(30, 27, 60, 0.80));
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 2px solid rgba(102, 126, 234, 0.3);
   padding: 28px 36px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   max-width: 750px;
-  border-radius: 18px;
+  border-radius: 20px;
   transition: all var(--transition-base);
   gap: 24px;
   box-shadow: 
-    0 10px 40px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.08);
+    0 12px 45px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(102, 126, 234, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   animation: fadeInUp 0.5s ease both;
   position: relative;
   overflow: hidden;
@@ -514,7 +686,7 @@ nav li {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  background: linear-gradient(90deg, transparent, rgba(240, 147, 251, 0.15), transparent);
   transition: left var(--transition-slow);
 }
 
@@ -523,16 +695,17 @@ nav li {
 }
 
 .view_all_tasks_card:hover {
-  transform: translateY(-6px) scale(1.01);
-  border-color: var(--primary-light);
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(240, 147, 251, 0.6);
   box-shadow: 
-    0 16px 48px rgba(99, 102, 241, 0.35),
-    0 0 0 1px rgba(99, 102, 241, 0.1);
-  background: var(--glass-bg-hover);
+    0 20px 60px rgba(102, 126, 234, 0.4),
+    0 0 50px rgba(240, 147, 251, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, rgba(15, 15, 35, 0.95), rgba(30, 27, 60, 0.90));
 }
 
 .view_all_tasks_card p {
-  font-size: 16px;
+  font-size: 17px;
   flex: 1;
   font-weight: 500;
   transition: all var(--transition-base);
@@ -550,14 +723,14 @@ nav li {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 700;
-  font-size: 19px;
+  font-size: 20px;
 }
 
 .view_all_tasks_card p:first-child {
-  flex: 0 0 60px;
+  flex: 0 0 70px;
   font-weight: 700;
   color: var(--primary-color);
-  font-size: 18px;
+  font-size: 19px;
 }
 
 .view_all_tasks_card p:nth-child(2) {
@@ -574,15 +747,16 @@ nav li {
 .no_tasks_message {
   text-align: center;
   color: var(--text-secondary);
-  font-size: 20px;
-  padding: 60px 40px;
+  font-size: 21px;
+  padding: 65px 45px;
   background: rgba(20, 20, 30, 0.7);
   backdrop-filter: blur(20px);
-  border-radius: 20px;
+  border-radius: 22px;
   border: 2px solid var(--glass-border);
-  max-width: 600px;
+  max-width: 620px;
   margin: 0 auto;
   font-weight: 500;
+  line-height: 1.7;
 }
 
 /* ========= FORM PAGES (Create, Update, Delete, View) ========= */
@@ -606,18 +780,20 @@ nav li {
 .update_task form,
 .delete_task form,
 .view_task form {
-  background: rgba(20, 20, 30, 0.85);
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  border: 2px solid var(--glass-border);
+  background: linear-gradient(135deg, rgba(15, 15, 35, 0.92), rgba(30, 27, 75, 0.88));
+  backdrop-filter: blur(35px) saturate(200%);
+  -webkit-backdrop-filter: blur(35px) saturate(200%);
+  border: 2px solid transparent;
+  background-clip: padding-box;
   padding: 48px 40px;
-  border-radius: 24px;
+  border-radius: 28px;
   width: 100%;
   max-width: 580px;
   box-shadow: 
-    0 25px 70px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 2px rgba(102, 126, 234, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 0.12),
+    0 0 60px rgba(102, 126, 234, 0.15);
   display: flex;
   flex-direction: column;
   gap: 26px;
@@ -625,6 +801,23 @@ nav li {
   position: relative;
   overflow: visible;
   margin: auto;
+}
+
+.create_task form::after,
+.update_task form::after,
+.delete_task form::after,
+.view_task form::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(240, 147, 251, 0.5));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .create_task form::before,
@@ -646,16 +839,16 @@ nav li {
 .delete_task form h2,
 .view_task form h2 {
   text-align: center;
-  font-size: 32px;
+  font-size: 36px;
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   font-weight: 800;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
   position: relative;
-  padding-bottom: 16px;
+  padding-bottom: 18px;
 }
 
 .create_task form h2::after,
@@ -676,18 +869,18 @@ nav li {
 .form_group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   width: 100%;
 }
 
 .form_group label {
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.5px;
+  font-size: 14px;
+  letter-spacing: 0.8px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   text-transform: uppercase;
 }
 
@@ -776,19 +969,35 @@ nav li {
 }
 
 .modal-content {
-  background: rgba(20, 20, 30, 0.95);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 2px solid var(--glass-border);
+  background: linear-gradient(135deg, rgba(15, 15, 35, 0.98), rgba(30, 27, 60, 0.95));
+  backdrop-filter: blur(45px) saturate(200%);
+  -webkit-backdrop-filter: blur(45px) saturate(200%);
+  border: 2px solid transparent;
+  background-clip: padding-box;
   padding: 50px 45px;
-  border-radius: 24px;
+  border-radius: 28px;
   max-width: 540px;
   width: 100%;
   box-shadow: 
-    0 30px 80px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(255, 255, 255, 0.15);
+    0 35px 90px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(102, 126, 234, 0.25),
+    inset 0 2px 0 rgba(255, 255, 255, 0.15);
   animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
+}
+
+.modal-content::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.6), rgba(240, 147, 251, 0.6));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .modal-content::before {
@@ -797,26 +1006,27 @@ nav li {
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 4px;
   background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-  border-radius: 24px 24px 0 0;
+  border-radius: 28px 28px 0 0;
+  z-index: 1;
 }
 
 .modal-content p {
   color: var(--text-primary);
-  font-size: 18px;
-  line-height: 1.8;
+  font-size: 19px;
+  line-height: 1.9;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   font-weight: 500;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.3px;
 }
 
 .close {
   position: absolute;
   top: 20px;
   right: 24px;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 400;
   cursor: pointer;
   color: var(--text-muted);
@@ -868,9 +1078,10 @@ nav li {
 }
 
 .loading p {
-  margin-top: 16px;
+  margin-top: 18px;
   font-weight: 500;
   letter-spacing: 0.5px;
+  font-size: 18px;
 }
 
 /* ========= RESPONSIVE DESIGN ========= */
@@ -898,11 +1109,36 @@ nav li {
   nav ul {
     justify-content: center;
     gap: 4px;
+    flex-wrap: wrap;
   }
 
   .nav_link {
     padding: 8px 12px;
     font-size: 13px;
+  }
+  
+  .wallet_info_nav {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  
+  .wallet_info {
+    width: 100%;
+    max-width: 340px;
+    justify-content: center;
+  }
+  
+  .wallet_address_header {
+    font-size: 13px;
+  }
+  
+  .copy_btn {
+    min-width: 32px;
+    height: 28px;
+    padding: 4px 8px;
+    font-size: 14px;
   }
 
   .wallet_header p {
